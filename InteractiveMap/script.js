@@ -14,11 +14,10 @@ var data = [
         intensity: 75,
         population: "270,000",
         weather: "Cloudy, 15°C",
-        factors: [
-            "High population density",
-            "Strong cultural / commercial activity",
-            "Moderate weather conditions"
-        ]
+        crime: {
+            trend: "increasing",
+            summary: "Crime has increased over recent months."
+        }
     },
     {
         name: "Greenwich",
@@ -27,11 +26,10 @@ var data = [
         intensity: 38,
         population: "290,000",
         weather: "Sunny, 17°C",
-        factors: [
-            "Lower congestion compared to central London",
-            "More green space",
-            "Stable environmental conditions"
-        ]
+        crime: {
+            trend: "decreasing",
+            summary: "Crime levels have reduced recently."
+        }
     },
     {
         name: "Hackney",
@@ -40,11 +38,10 @@ var data = [
         intensity: 62,
         population: "280,000",
         weather: "Rainy, 14°C",
-        factors: [
-            "Moderate–high density residential area",
-            "Mixed commercial/residential usage",
-            "Variable weather conditions"
-        ]
+        crime: {
+            trend: "increasing",
+            summary: "Crime fluctuates but shows upward trend."
+        }
     },
     {
         name: "Westminster",
@@ -53,11 +50,10 @@ var data = [
         intensity: 88,
         population: "260,000",
         weather: "Cloudy, 16°C",
-        factors: [
-            "Very high visitor and commuter density",
-            "Major administrative and tourism centre",
-            "High urban activity levels"
-        ]
+        crime: {
+            trend: "increasing",
+            summary: "High crime levels due to heavy activity."
+        }
     },
     {
         name: "Croydon",
@@ -66,11 +62,10 @@ var data = [
         intensity: 32,
         population: "390,000",
         weather: "Windy, 13°C",
-        factors: [
-            "Lower central congestion",
-            "Residential-heavy environment",
-            "More spatial availability"
-        ]
+        crime: {
+            trend: "decreasing",
+            summary: "Crime has gradually decreased."
+        }
     }
 ];
 
@@ -86,10 +81,9 @@ function getInterpretation(value) {
     return "Low urban intensity";
 }
 
-function formatFactors(list) {
-    return "<ul>" + list.map(i => "<li>" + i + "</li>").join("") + "</ul>";
+function getTrendColor(trend) {
+    return trend === "increasing" ? "red" : "green";
 }
-
 
 function createMarkers(filter = "all") {
 
@@ -115,10 +109,15 @@ function createMarkers(filter = "all") {
             "<h3>" + point.name + "</h3>" +
             "<b>Population:</b> " + point.population + "<br>" +
             "<b>Weather:</b> " + point.weather + "<br>" +
-            "<b>Intensity Score:</b> " + point.intensity + "<br>" +
+            "<b>Intensity:</b> " + point.intensity + "<br>" +
             "<b>Classification:</b> " + getInterpretation(point.intensity) + "<br><br>" +
-            "<b>Contributing Factors:</b>" +
-            formatFactors(point.factors)
+
+            "<b>Crime Trend:</b> <span style='color:" + getTrendColor(point.crime.trend) + "'>" 
+            + point.crime.trend + "</span><br>" +
+
+            "<b>Summary:</b> " + point.crime.summary + "<br><br>" +
+
+            "<a href='crime.html?area=" + point.name + "' target='_blank'>View More Information</a>"
         );
 
         markers.push(circle);
